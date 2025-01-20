@@ -22,6 +22,14 @@ Replace your API domain with the domain of the proxy deployed on your server. Fo
   - from `https://api.perplexity.ai`
   - to `https://your-proxy/pplx`
 
+## Deployment
+
+Deploy this as a Docker container, check out [Dockerfile](./Dockerfile).
+
+## Why Deno?
+
+I tried to use Bun but it has issues: https://github.com/oven-sh/bun/issues/8616
+
 ## License
 
 MIT.
