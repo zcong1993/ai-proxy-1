@@ -2,6 +2,10 @@
 
 This is a simple proxy for AI services.
 
+## Sponsorship
+
+This project is sponsored by [ChatWise](https://chatwise.app), the fastest AI chatbot that works for any LLM.
+
 ## Usage
 
 Replace your API domain with the domain of the proxy deployed on your server. For example:
