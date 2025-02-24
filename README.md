@@ -26,7 +26,7 @@ Replace your API domain with the domain of the proxy deployed on your server. Fo
   - from `https://api.perplexity.ai`
   - to `https://your-proxy/pplx`
  
-## Hoted by ChatWise
+## Hosted by ChatWise
 
 Use the hosted API, for example OpenAI `https://ai-proxy.chatwise.app/openai/v1`
 
