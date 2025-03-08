@@ -25,6 +25,15 @@ Replace your API domain with the domain of the proxy deployed on your server. Fo
 - Perplexity:
   - from `https://api.perplexity.ai`
   - to `https://your-proxy/pplx`
+- Mistral:
+  - from `https://api.mistral.ai`
+  - to `https://your-proxy/mistral`
+- OpenRouter:
+  - from `https://openrouter.ai/api`
+  - to `https://your-proxy/openrouter`
+- xAI:
+  - from `https://api.xai.ai`
+  - to `https://your-proxy/xai`
  
 ## Hosted by ChatWise
 

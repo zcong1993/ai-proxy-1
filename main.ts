@@ -66,6 +66,18 @@ const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
       pathSegment: "openai",
       target: "https://api.openai.com",
     },
+    {
+      pathSegment: 'mistral',
+      target: 'https://api.mistral.ai',
+    },
+    {
+      pathSegment: 'openrouter',
+      target: 'https://openrouter.ai/api',
+    },
+    {
+      pathSegment: 'xai',
+      target: 'https://api.xai.ai',
+    }
   ]
 
 app.post(
