@@ -71,6 +71,10 @@ const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
       target: 'https://api.mistral.ai',
     },
     {
+      pathSegment: 'openrouter/api',
+      target: 'https://openrouter.ai/api',
+    },
+    {
       pathSegment: 'openrouter',
       target: 'https://openrouter.ai/api',
     },
