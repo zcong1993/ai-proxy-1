@@ -80,7 +80,7 @@ const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
     },
     {
       pathSegment: 'xai',
-      target: 'https://api.xai.ai',
+      target: 'https://api.x.ai',
     }
   ]
 
