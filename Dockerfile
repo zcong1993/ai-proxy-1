@@ -1,30 +1,38 @@
-# Based on https://github.com/denoland/deno_docker/blob/main/alpine.dockerfile
+# syntax=docker/dockerfile:1
 
-ARG DENO_VERSION=2.0.6
-ARG BIN_IMAGE=denoland/deno:bin-${DENO_VERSION}
-FROM ${BIN_IMAGE} AS bin
+# Build Stage
+FROM node:22-slim AS builder
+WORKDIR /app
+RUN npm i -g bun
 
-FROM frolvlad/alpine-glibc:alpine-3.13
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN bun i
 
-RUN apk --no-cache add ca-certificates curl
-
-RUN addgroup --gid 1000 deno \
-  && adduser --uid 1000 --disabled-password deno --ingroup deno \
-  && mkdir /deno-dir/ \
-  && chown deno:deno /deno-dir/
-
-ENV DENO_DIR /deno-dir/
-ENV DENO_INSTALL_ROOT /usr/local
-
-ARG DENO_VERSION
-ENV DENO_VERSION=${DENO_VERSION}
-COPY --from=bin /deno /bin/deno
-
-ENV PORT=8000
-
-WORKDIR /deno-dir
+# Copy the rest of the application source code
 COPY . .
 
-ENTRYPOINT ["/bin/deno"]
-RUN deno install --entrypoint main.ts
-CMD ["task", "start"]
+# Build the TypeScript project
+# Assumes you have a "build" script in your package.json, e.g., "tsc -p tsconfig.json"
+RUN bun run build
+
+# Production Stage
+FROM node:22-slim AS production
+WORKDIR /app
+RUN npm i -g bun
+
+# Copy package.json
+COPY package.json ./
+
+# Install production dependencies only
+RUN bun i --prod
+
+# Copy built code from the builder stage
+COPY --from=builder /app/dist ./dist
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Command to run the application
+# Assumes your entry point after build is dist/main.js
+CMD ["bun", "start"]

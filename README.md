@@ -43,10 +43,6 @@ Use the hosted API, for example OpenAI `https://ai-proxy.chatwise.app/openai/v1`
 
 Deploy this as a Docker container, check out [Dockerfile](./Dockerfile).
 
-## Why Deno?
-
-I tried to use Bun but it has issues: https://github.com/oven-sh/bun/issues/8616
-
 ## License
 
 MIT.
