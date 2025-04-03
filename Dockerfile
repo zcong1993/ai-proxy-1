@@ -19,6 +19,10 @@ RUN bun run build
 # Production Stage
 FROM node:22-slim AS production
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    curl
+
 RUN npm i -g bun
 
 # Copy package.json
