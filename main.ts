@@ -28,7 +28,12 @@ const fetchWithTimeout = async (
   }, timeout)
 
   try {
-    const res = await fetch(url, { ...options, signal: controller.signal })
+    const res = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+      // @ts-expect-error
+      duplex: "half",
+    })
     clearTimeout(timeoutId)
     return res
   } catch (error) {
@@ -67,21 +72,21 @@ const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
       target: "https://api.openai.com",
     },
     {
-      pathSegment: 'mistral',
-      target: 'https://api.mistral.ai',
+      pathSegment: "mistral",
+      target: "https://api.mistral.ai",
     },
     {
-      pathSegment: 'openrouter/api',
-      target: 'https://openrouter.ai/api',
+      pathSegment: "openrouter/api",
+      target: "https://openrouter.ai/api",
     },
     {
-      pathSegment: 'openrouter',
-      target: 'https://openrouter.ai/api',
+      pathSegment: "openrouter",
+      target: "https://openrouter.ai/api",
     },
     {
-      pathSegment: 'xai',
-      target: 'https://api.x.ai',
-    }
+      pathSegment: "xai",
+      target: "https://api.x.ai",
+    },
   ]
 
 app.post(
@@ -124,12 +129,10 @@ app.use(async (c, next) => {
     }
 
     const res = await fetchWithTimeout(
-      `${proxy.target}${
-        url.pathname.replace(
-          `/${proxy.pathSegment}/`,
-          "/",
-        )
-      }${url.search}`,
+      `${proxy.target}${url.pathname.replace(
+        `/${proxy.pathSegment}/`,
+        "/",
+      )}${url.search}`,
       {
         method: c.req.method,
         headers,
@@ -146,6 +149,5 @@ app.use(async (c, next) => {
 
   next()
 })
-
 
 export default app
