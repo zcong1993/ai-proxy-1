@@ -3,6 +3,8 @@ import { cors } from "hono/cors"
 import { zValidator } from "@hono/zod-validator"
 import { z } from "zod"
 import { logger } from "hono/logger"
+import { proxy } from 'hono/proxy'
+
 
 const app = new Hono()
 
@@ -28,7 +30,7 @@ const fetchWithTimeout = async (
   }, timeout)
 
   try {
-    const res = await fetch(url, {
+    const res = await proxy(url, {
       ...options,
       signal: controller.signal,
       // @ts-expect-error
@@ -100,7 +102,7 @@ app.post(
   async (c) => {
     const { url } = c.req.valid("query")
 
-    const res = await fetch(url, {
+    const res = await proxy(url, {
       method: c.req.method,
       body: c.req.raw.body,
       headers: c.req.raw.headers,
