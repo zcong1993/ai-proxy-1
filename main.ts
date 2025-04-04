@@ -129,6 +129,8 @@ app.use(async (c, next) => {
     if (proxy.pathSegment === "anthropic") {
       headers.delete("origin")
     }
+    headers.delete('content-length')
+    headers.delete('host')
 
     const res = await fetchWithTimeout(
       `${proxy.target}${url.pathname.replace(
