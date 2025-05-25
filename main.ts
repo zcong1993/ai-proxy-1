@@ -52,6 +52,7 @@ const fetchWithTimeout = async (
 const removeCloudflareHeaders = (headers: Headers) => {
   headers.forEach((_, key) => {
     const k = key.toLowerCase()
+    console.log(key, k)
     if (
       k.startsWith("cf-") ||
       k.startsWith("x-forwarded-") ||
