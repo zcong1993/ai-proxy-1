@@ -144,9 +144,6 @@ app.use(async (c, next) => {
       `/${proxy.pathSegment}/`,
       "/",
     )}${url.search}`
-    if (proxy.pathSegment === "generativelanguage") {
-      console.log(targetUrl, headers)
-    }
 
     const res = await fetchWithTimeout(targetUrl, {
       method: c.req.method,
