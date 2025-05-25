@@ -133,7 +133,8 @@ app.use(async (c, next) => {
         !k.startsWith("cf-") &&
         !k.startsWith("x-forwarded-") &&
         !k.startsWith("cdn-") &&
-        k !== "x-real-ip"
+        k !== "x-real-ip" &&
+        k !== "host"
       ) {
         headers.set(key, value)
       }
