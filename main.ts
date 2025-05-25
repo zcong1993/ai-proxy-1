@@ -49,6 +49,20 @@ const fetchWithTimeout = async (
   }
 }
 
+const removeCloudflareHeaders = (headers: Headers) => {
+  headers.forEach((_, key) => {
+    const k = key.toLowerCase()
+    if (
+      k.startsWith("cf-") ||
+      k.startsWith("x-forwarded-") ||
+      k.startsWith("cdn-") ||
+      k === "x-real-ip"
+    ) {
+      headers.delete(key)
+    }
+  })
+}
+
 const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
   [
     {
@@ -130,6 +144,7 @@ app.use(async (c, next) => {
     }
     headers.delete("content-length")
     headers.set("host", new URL(proxy.target).hostname)
+    removeCloudflareHeaders(headers)
 
     const targetUrl = `${proxy.target}${url.pathname.replace(
       `/${proxy.pathSegment}/`,
