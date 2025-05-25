@@ -49,21 +49,6 @@ const fetchWithTimeout = async (
   }
 }
 
-const removeCloudflareHeaders = (headers: Headers) => {
-  headers.forEach((_, key) => {
-    const k = key.toLowerCase()
-    console.log(key, k)
-    if (
-      k.startsWith("cf-") ||
-      k.startsWith("x-forwarded-") ||
-      k.startsWith("cdn-") ||
-      k === "x-real-ip"
-    ) {
-      headers.delete(key)
-    }
-  })
-}
-
 const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
   [
     {
@@ -139,13 +124,20 @@ app.use(async (c, next) => {
   )
 
   if (proxy) {
-    const headers = new Headers(c.req.raw.headers)
-    if (proxy.pathSegment === "anthropic") {
-      headers.delete("origin")
-    }
-    headers.delete("content-length")
+    const headers = new Headers()
     headers.set("host", new URL(proxy.target).hostname)
-    removeCloudflareHeaders(headers)
+
+    c.req.raw.headers.forEach((value, key) => {
+      const k = key.toLowerCase()
+      if (
+        !k.startsWith("cf-") &&
+        !k.startsWith("x-forwarded-") &&
+        !k.startsWith("cdn-") &&
+        k !== "x-real-ip"
+      ) {
+        headers.set(key, value)
+      }
+    })
 
     const targetUrl = `${proxy.target}${url.pathname.replace(
       `/${proxy.pathSegment}/`,
