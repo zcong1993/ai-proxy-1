@@ -3,8 +3,7 @@ import { cors } from "hono/cors"
 import { zValidator } from "@hono/zod-validator"
 import { z } from "zod"
 import { logger } from "hono/logger"
-import { proxy } from 'hono/proxy'
-
+import { proxy } from "hono/proxy"
 
 const app = new Hono()
 
@@ -129,21 +128,20 @@ app.use(async (c, next) => {
     if (proxy.pathSegment === "anthropic") {
       headers.delete("origin")
     }
-    headers.delete('content-length')
-    headers.delete('host')
+    headers.delete("content-length")
+    headers.set("host", new URL(proxy.target).hostname)
 
-    const res = await fetchWithTimeout(
-      `${proxy.target}${url.pathname.replace(
-        `/${proxy.pathSegment}/`,
-        "/",
-      )}${url.search}`,
-      {
-        method: c.req.method,
-        headers,
-        body: c.req.raw.body,
-        timeout: 60000,
-      },
-    )
+    const targetUrl = `${proxy.target}${url.pathname.replace(
+      `/${proxy.pathSegment}/`,
+      "/",
+    )}${url.search}`
+
+    const res = await fetchWithTimeout(targetUrl, {
+      method: c.req.method,
+      headers,
+      body: c.req.raw.body,
+      timeout: 60000,
+    })
 
     return new Response(res.body, {
       headers: res.headers,
