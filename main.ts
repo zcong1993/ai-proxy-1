@@ -88,6 +88,10 @@ const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
       pathSegment: "xai",
       target: "https://api.x.ai",
     },
+    {
+      pathSegment: "googleapis-cloudcode-pa",
+      target: "https://cloudcode-pa.googleapis.com",
+    },
   ]
 
 app.post(
