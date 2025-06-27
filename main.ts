@@ -53,7 +53,7 @@ const proxies: { pathSegment: string; target: string; orHostname?: string }[] =
   [
     {
       pathSegment: "generativelanguage",
-      orHostname: "gooai.chatkit.app",
+      orHostname: process.env.GOOGLE_PROXY_HOST ?? "gooai.chatkit.app",
       target: "https://generativelanguage.googleapis.com",
     },
     {
